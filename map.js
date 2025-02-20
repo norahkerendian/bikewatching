@@ -44,3 +44,15 @@ map.on('load', () => {
         }
     });
 });
+
+map.on('load', () => {
+    // Load the nested JSON file
+    const jsonurl = 'https://dsc106.com/labs/lab07/data/bluebikes-stations.json';
+    d3.json(jsonurl).then(jsonData => {
+      console.log('Loaded JSON Data:', jsonData);  // Log to verify structure
+      const stations = jsonData.data.stations;
+      console.log('Stations Array:', stations);
+    }).catch(error => {
+      console.error('Error loading JSON:', error);  // Handle errors if JSON loading fails
+    });
+});
