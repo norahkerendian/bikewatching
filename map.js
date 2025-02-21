@@ -88,3 +88,15 @@ function getCoords(station) {
     const { x, y } = map.project(point);  // Project to pixel coordinates
     return { cx: x, cy: y };  // Return as object for use in SVG attributes
 }
+
+map.on('load', () => {
+    // Load the Bluebikes traffic data CSV
+    const csvUrl = "https://dsc106.com/labs/lab07/data/bluebikes-traffic-2024-03.csv";
+  
+    d3.csv(csvUrl).then(trips => {
+      console.log('Loaded CSV Data:', trips);  // Log to verify structure
+    }).catch(error => {
+      console.error('Error loading CSV:', error);  // Handle errors if CSV loading fails
+    });
+  });
+  
