@@ -24,7 +24,7 @@ label {
     width: 400px; /* Adjust this value to make the slider longer or shorter */
 }
 
-#time-display {
+#selected-time {
     display: block;
     justify-self: flex-end;
 }
