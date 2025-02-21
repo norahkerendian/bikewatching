@@ -8,3 +8,31 @@ body {
     margin: auto;
     padding: 1em;
   }
+  
+header {
+    display: flex;
+    gap: 30em;
+    align-items: baseline;
+    margin-bottom: 1em;
+}
+  
+label {
+    margin-left: auto;
+}
+
+#time-slider {
+    width: 400px; /* Adjust this value to make the slider longer or shorter */
+}
+
+#time-display {
+    display: block;
+    justify-self: flex-end;
+}
+  
+#any-time {
+    display: block;
+    justify-self: flex-end;
+    color: lightgray;
+    font-style: italic;
+}
+  
