@@ -24,3 +24,7 @@ html, body {
     /* background: yellow;
     opacity: 50%; */
   }
+
+#map svg circle {
+    pointer-events: auto;
+}

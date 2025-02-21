@@ -53,7 +53,7 @@ map.on('load', () => {
     const jsonurl = 'https://dsc106.com/labs/lab07/data/bluebikes-stations.json';
     d3.json(jsonurl).then(jsonData => {
       console.log('Loaded JSON Data:', jsonData);  // Log to verify structure
-      const stations = jsonData.data.stations;
+       stations = jsonData.data.stations;
       console.log('Stations Array:', stations);
       const circles = svg.selectAll('circle')
         .data(stations)
@@ -63,7 +63,8 @@ map.on('load', () => {
         .attr('fill', 'steelblue')  // Circle fill color
         .attr('stroke', 'white')    // Circle border color
         .attr('stroke-width', 1)    // Circle border thickness
-        .attr('opacity', 0.8);      // Circle opacity
+        .attr('opacity', 0.6);      // Circle opacity
+        
 
         function updatePositions() {
             circles
@@ -95,8 +96,43 @@ map.on('load', () => {
   
     d3.csv(csvUrl).then(trips => {
       console.log('Loaded CSV Data:', trips);  // Log to verify structure
+
+      departures = d3.rollup(
+        trips,
+        (v) => v.length,
+        (d) => d.start_station_id,
+      );
+
+      arrivals = d3.rollup(
+        trips,
+        (v) => v.length,
+        (d) => d.end_station_id,
+      );
+
+      stations = stations.map((station) => {
+        let id = station.short_name;
+        station.arrivals = arrivals.get(id) ?? 0;
+        station.departures = departures.get(id) ?? 0;
+        station.totalTraffic = station.arrivals + station.departures;
+        return station;
+      });
+
+      const radiusScale = d3
+        .scaleSqrt()
+        .domain([0, d3.max(stations, (d) => d.totalTraffic)])
+        .range([0, 25]);
+
+      svg.selectAll('circle')
+        .data(stations)
+        .attr('r', d => radiusScale(d.totalTraffic))
+        .each(function(d) {
+            // Add <title> for browser tooltips
+            d3.select(this)
+              .append('title')
+              .text(`${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
+          });
+
     }).catch(error => {
-      console.error('Error loading CSV:', error);  // Handle errors if CSV loading fails
+      console.error('Error loading CSV:', error);  
     });
   });
-  
